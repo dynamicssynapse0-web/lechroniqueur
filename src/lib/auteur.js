@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { creerClientServeur } from './supabase/serveur';
 
-// Réserve une page aux comptes « actifs » et renvoie les infos de l’auteur.
+// Réserve une page aux comptes « actifs » et aux administrateurs.
 export async function exigerAuteurActif() {
   const supabase = await creerClientServeur();
   const { data: session } = await supabase.auth.getClaims();
@@ -10,12 +10,15 @@ export async function exigerAuteurActif() {
 
   const { data: profil } = await supabase
     .from('profiles')
-    .select('prenom, nom, media, statut')
+    .select('prenom, nom, media, statut, role')
     .eq('id', utilisateurId)
     .maybeSingle();
 
   if (!profil) redirect('/connexion');
-  if (profil.statut !== 'actif') redirect(profil.statut === 'accepte' ? '/profil' : '/suivi');
+  // Un admin peut rédiger même si son statut de journaliste n’est pas « actif ».
+  if (profil.role !== 'admin' && profil.statut !== 'actif') {
+    redirect(profil.statut === 'accepte' ? '/profil' : '/suivi');
+  }
 
   const nom = `${profil.prenom} ${profil.nom}`.trim() || 'Rédaction lechroniqueur';
   return { supabase, utilisateurId, auteur: { nom, media: profil.media } };

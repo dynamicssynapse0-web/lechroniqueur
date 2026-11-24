@@ -1,4 +1,4 @@
-import { redirect, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import EditerProfil from '../../../components/EditerProfil';
 import { exigerAuteurActif } from '../../../lib/auteur';
 import { lienJournaliste } from '../../../lib/journalistes';
@@ -14,12 +14,11 @@ export default async function MonProfil() {
 
   const { data: profil } = await supabase
     .from('profiles')
-    .select('prenom, nom, media, email, ville, pays, role, photo_path')
+    .select('prenom, nom, media, email, ville, pays, photo_path')
     .eq('id', utilisateurId)
     .maybeSingle();
 
   if (!profil) notFound();
-  if (profil.role === 'admin') redirect('/admin');
 
   const { data: fiche } = await supabase
     .from('journalistes')

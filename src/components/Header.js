@@ -156,11 +156,19 @@ export default function Header() {
                     {LIBELLES_STATUT[moi.statut]}
                   </Link>
                 )}
+                {moi.role === 'admin' && (
+                  <Link href="/admin" className="lien-bouton">
+                    Administration
+                  </Link>
+                )}
                 <button type="button" className="lien-bouton" onClick={deconnecter}>
                   Se déconnecter
                 </button>
-                <Link href={destinationApresConnexion(moi)} className="bouton">
-                  {moi.role === 'admin' ? 'Administration' : 'Mon espace'}
+                <Link
+                  href={moi.role === 'admin' ? '/espace' : destinationApresConnexion(moi)}
+                  className="bouton"
+                >
+                  {moi.role === 'admin' ? 'Mon espace / Publier' : 'Mon espace'}
                 </Link>
               </>
             ) : (

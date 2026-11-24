@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import AdminDemandes from '../../components/AdminDemandes';
 import { creerClientServeur } from '../../lib/supabase/serveur';
@@ -66,6 +67,9 @@ export default async function Admin() {
         liens des cartes expirent au bout de 10 minutes : actualisez la page si une
         image ne s’affiche plus.
       </p>
+      <Link href="/espace" className="btn-principal btn-lien">
+        Publier / Gérer mes articles
+      </Link>
       {error ? (
         <p className="erreur" role="alert">
           Impossible de charger les demandes. Actualisez la page.
