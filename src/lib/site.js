@@ -7,20 +7,20 @@ export const SITE_INFOS = {
   nom: 'lechroniqueur',
 
   // Qui édite le site (vous, ou votre société / association)
-  editeur: 'lechroniqueur',
-  statut: 'À COMPLÉTER : statut juridique (ex. entreprise individuelle, société, association)',
-  adresse: 'Paris, France',
+  editeur: 'lechroniqueur (Synapse Dynamics)',
+  statut: 'Entreprise individuelle',
+  adresse: 'Douala, Cameroun',
   email: 'dynamicssynapse0@gmail.com',
   telephone: '', // facultatif : laissez vide pour ne pas l'afficher
-  responsablePublication: 'À COMPLÉTER : nom du responsable de la publication',
+  responsablePublication: 'Aubin Simo Kaigom',
 
   // Hébergement et données
-  hebergeur: 'À COMPLÉTER : nom et adresse de l’hébergeur du site',
-  regionDonnees: 'À COMPLÉTER : région de stockage des données (visible dans les paramètres de votre projet Supabase)',
+  hebergeur: 'Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis',
+  regionDonnees: 'Union européenne',
 
   // Engagements
-  dureeRefus: 'À COMPLÉTER : durée de conservation d’une demande refusée (ex. 3 mois)',
-  droitApplicable: 'À COMPLÉTER : pays dont le droit s’applique et tribunaux compétents',
+  dureeRefus: '3 mois',
+  droitApplicable: 'Droit camerounais et tribunaux compétents de Douala',
 
   miseAJour: '22 novembre 2026',
 };
