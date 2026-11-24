@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Avatar from '../components/Avatar';
 import CarteArticle from '../components/CarteArticle';
+import FilPublications from '../components/FilPublications';
 import { lireArticlesPublies, urlImage } from '../lib/publics';
 import { RUBRIQUES } from '../lib/rubriques';
 import { urlPhoto } from '../lib/photos';
@@ -10,6 +11,7 @@ import {
   initiales,
   lienJournaliste,
   extrait,
+  normaliser,
 } from '../lib/journalistes';
 
 export const revalidate = 60;
@@ -39,6 +41,9 @@ function versVue(a) {
     auteurLien: j ? lienJournaliste(j) : null,
     photoUrl: j ? urlPhoto(j.photo_path) : '',
     initiales: j ? initiales(j) : 'L',
+    recherche: normaliser(
+      [a.titre, a.resume, a.categorie, j ? nomComplet(j) : '', j?.media || ''].join(' ')
+    ),
   };
 }
 
@@ -83,29 +88,7 @@ export default async function Accueil() {
         <p className="vide">Aucun article n’est publié pour le moment.</p>
       ) : (
         <div className="accueil-editorial">
-          <section className="fil-publications" aria-labelledby="titre-fil">
-            <h2 id="titre-fil" className="titre-section titre-colonne">
-              Dernières publications
-            </h2>
-            <ul className="fil-liste">
-              {vues.map((a) => (
-                <li key={a.id} className="fil-item">
-                  <Link href={a.lien} className="fil-lien">
-                    {a.categorie && <span className="etiquette-rubrique">{a.categorie}</span>}
-                    <span className="fil-titre">{a.titre}</span>
-                    {a.extrait && <span className="fil-extrait">{a.extrait}</span>}
-                    <span className="fil-meta">
-                      <span>
-                        {a.auteurNom}
-                        {a.auteurMedia ? `, ${a.auteurMedia}` : ''}
-                      </span>
-                      <time dateTime={a.dateIso}>{a.dateTexte}</time>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <FilPublications articles={vues} />
 
           <section className="une-colonne" aria-labelledby="titre-une">
             <h2 id="titre-une" className="titre-section titre-colonne">

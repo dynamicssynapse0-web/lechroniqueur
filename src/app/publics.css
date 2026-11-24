@@ -109,6 +109,31 @@
 }
 .titre-colonne::after { display: none; }
 
+/* Recherche et filtre rapide du fil */
+.fil-filtres { display: grid; gap: 10px; margin-bottom: 10px; }
+.fil-filtres input[type='search'] { min-width: 0; }
+.fil-compteur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  color: #50607f;
+}
+.fil-effacer {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--bleu);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.fil-effacer:hover { color: var(--rouge-fonce); }
+
 /* Fil continu des dernières publications */
 .fil-liste { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .fil-item {
