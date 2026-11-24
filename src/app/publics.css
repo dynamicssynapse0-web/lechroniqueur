@@ -172,10 +172,12 @@
 .fil-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 2px 10px;
   font-size: 0.82rem;
   color: #50607f;
 }
+.fil-auteur { display: inline-flex; align-items: center; gap: 6px; }
 
 /* Mise en avant principale */
 .une-principale {

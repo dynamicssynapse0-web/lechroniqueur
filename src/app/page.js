@@ -4,15 +4,8 @@ import CarteArticle from '../components/CarteArticle';
 import FilPublications from '../components/FilPublications';
 import { lireArticlesPublies, urlImage } from '../lib/publics';
 import { RUBRIQUES } from '../lib/rubriques';
-import { urlPhoto } from '../lib/photos';
 import { formaterDate } from '../lib/format';
-import {
-  nomComplet,
-  initiales,
-  lienJournaliste,
-  extrait,
-  normaliser,
-} from '../lib/journalistes';
+import { auteurAffichage, extrait, normaliser } from '../lib/journalistes';
 
 export const revalidate = 60;
 
@@ -26,6 +19,7 @@ const NB_SECONDAIRES = 3;
 
 function versVue(a) {
   const j = a.auteur;
+  const auteur = auteurAffichage(j);
   return {
     id: a.id,
     titre: a.titre,
@@ -36,13 +30,13 @@ function versVue(a) {
     imageUrl: urlImage(a.image_path),
     dateIso: a.publie_le,
     dateTexte: formaterDate(a.publie_le),
-    auteurNom: j ? nomComplet(j) : 'Rédaction lechroniqueur',
+    auteurNom: auteur.nom,
     auteurMedia: j?.media || '',
-    auteurLien: j ? lienJournaliste(j) : null,
-    photoUrl: j ? urlPhoto(j.photo_path) : '',
-    initiales: j ? initiales(j) : 'L',
+    auteurLien: auteur.lien,
+    photoUrl: auteur.photoUrl,
+    initiales: auteur.initiales,
     recherche: normaliser(
-      [a.titre, a.resume, a.categorie, j ? nomComplet(j) : '', j?.media || ''].join(' ')
+      [a.titre, a.resume, a.categorie, auteur.nom, j?.media || ''].join(' ')
     ),
   };
 }

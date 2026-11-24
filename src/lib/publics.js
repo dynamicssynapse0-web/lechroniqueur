@@ -10,8 +10,10 @@ export function urlImage(chemin) {
     : '';
 }
 
+// Les articles ne stockent pas le nom ni l'avatar : auteur_id relie la ligne à
+// la table `journalistes` (le même UUID que `profiles` pour le compte auteur).
 async function ajouterAuteurs(supabase, articles) {
-  const ids = [...new Set(articles.map((a) => a.auteur_id))];
+  const ids = [...new Set(articles.map((a) => a.auteur_id).filter(Boolean))];
   if (ids.length === 0) return articles.map((a) => ({ ...a, auteur: null }));
 
   const { data } = await supabase

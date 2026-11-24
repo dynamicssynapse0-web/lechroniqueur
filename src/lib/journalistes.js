@@ -1,4 +1,9 @@
 // Outils partagés par l'annuaire et les profils des journalistes.
+import { urlPhoto } from './photos';
+
+// Libellé affiché quand un article n'a pas de journaliste associé, ou quand son nom est vide.
+export const NOM_REDACTION = 'Rédaction MediraPress';
+const INITIALES_REDACTION = 'RM';
 
 // Minuscules, sans accents : « Aïcha » et « aicha » se retrouvent.
 export function normaliser(texte) {
@@ -42,6 +47,20 @@ export function slugifier(texte) {
 export function lienJournaliste(j) {
   const nom = slugifier(nomComplet(j)) || 'journaliste';
   return `/journalistes/${nom}-${j.id}`;
+}
+
+// Vue prête à afficher pour l'auteur d'un article : nom, photo, initiales et profil.
+// Le repli évite les noms vides et les avatars cassés côté cartes et fils de publications.
+export function auteurAffichage(j) {
+  const nom = j ? `${j.prenom ?? ''} ${j.nom ?? ''}`.trim() : '';
+  const initialesAuteur = j ? initiales(j) : '';
+
+  return {
+    nom: nom || NOM_REDACTION,
+    photoUrl: urlPhoto(j?.photo_path),
+    initiales: initialesAuteur === '?' ? INITIALES_REDACTION : initialesAuteur,
+    lien: j ? lienJournaliste(j) : null,
+  };
 }
 
 const UUID_FIN = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;

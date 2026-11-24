@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { NOM_REDACTION } from './journalistes';
 import { creerClientServeur } from './supabase/serveur';
 
 // Réserve une page aux comptes « actifs » et aux administrateurs.
@@ -20,6 +21,6 @@ export async function exigerAuteurActif() {
     redirect(profil.statut === 'accepte' ? '/profil' : '/suivi');
   }
 
-  const nom = `${profil.prenom} ${profil.nom}`.trim() || 'Rédaction lechroniqueur';
+  const nom = `${profil.prenom} ${profil.nom}`.trim() || NOM_REDACTION;
   return { supabase, utilisateurId, auteur: { nom, media: profil.media } };
 }

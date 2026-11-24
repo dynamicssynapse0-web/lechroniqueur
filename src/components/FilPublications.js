@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Avatar from './Avatar';
 import { RUBRIQUES } from '../lib/rubriques';
 import { normaliser } from '../lib/journalistes';
 
@@ -86,9 +87,12 @@ export default function FilPublications({ articles }) {
                 <span className="fil-titre">{a.titre}</span>
                 {a.extrait && <span className="fil-extrait">{a.extrait}</span>}
                 <span className="fil-meta">
-                  <span>
-                    {a.auteurNom}
-                    {a.auteurMedia ? `, ${a.auteurMedia}` : ''}
+                  <span className="fil-auteur">
+                    <Avatar taille="s" photoUrl={a.photoUrl} initiales={a.initiales} />
+                    <span>
+                      {a.auteurNom}
+                      {a.auteurMedia ? `, ${a.auteurMedia}` : ''}
+                    </span>
                   </span>
                   <time dateTime={a.dateIso}>{a.dateTexte}</time>
                 </span>

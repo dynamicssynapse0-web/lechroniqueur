@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import Avatar from './Avatar';
 import { urlImage } from '../lib/publics';
-import { urlPhoto } from '../lib/photos';
-import { initiales } from '../lib/journalistes';
+import { auteurAffichage } from '../lib/journalistes';
 import { formaterDate } from '../lib/format';
 import './carte-article.css';
 
@@ -15,7 +14,7 @@ export default function CarteArticle({
   const Titre = niveau;
   const image = urlImage(article.image_path);
   const j = article.auteur;
-  const auteur = j ? `${j.prenom} ${j.nom}`.trim() : 'Rédaction lechroniqueur';
+  const auteur = auteurAffichage(j);
   const lien = `/article/${article.slug}`;
 
   return (
@@ -34,16 +33,16 @@ export default function CarteArticle({
         {article.resume && <p className="carte-resume">{article.resume}</p>}
         <div className="carte-meta">
           {!sansAuteur && (
-            <Avatar
-              taille="s"
-              photoUrl={urlPhoto(j?.photo_path)}
-              initiales={j ? initiales(j) : 'L'}
-            />
+            <Avatar taille="s" photoUrl={auteur.photoUrl} initiales={auteur.initiales} />
           )}
           <p>
             {!sansAuteur && (
               <>
-                {auteur}
+                {auteur.lien ? (
+                  <Link href={auteur.lien}>{auteur.nom}</Link>
+                ) : (
+                  auteur.nom
+                )}
                 {j?.media ? `, ${j.media}` : ''} ·{' '}
               </>
             )}

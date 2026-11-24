@@ -5,8 +5,7 @@ import TexteArticle from '../../../components/TexteArticle';
 import { lireArticle, urlImage } from '../../../lib/publics';
 import { formaterDate, minutesLecture } from '../../../lib/format';
 import { rubriqueParNom } from '../../../lib/rubriques';
-import { lienJournaliste, initiales } from '../../../lib/journalistes';
-import { urlPhoto } from '../../../lib/photos';
+import { auteurAffichage, lienJournaliste } from '../../../lib/journalistes';
 import './article.css';
 
 export const revalidate = 60;
@@ -60,11 +59,11 @@ export default async function PageArticle({ params }) {
   if (!article) notFound();
 
   const image = urlImage(article.image_path);
-  const auteur = article.auteur;
-  const nomAuteur = auteur ? `${auteur.prenom} ${auteur.nom}`.trim() : 'Rédaction lechroniqueur';
-  const lienAuteur = auteur ? lienJournaliste(auteur) : null;
-  const photoAuteur = auteur ? urlPhoto(auteur.photo_path) : '';
-  const initialesAuteur = auteur ? initiales(auteur) : 'L';
+  const auteur = auteurAffichage(article.auteur);
+  const nomAuteur = auteur.nom;
+  const lienAuteur = auteur.lien;
+  const photoAuteur = auteur.photoUrl;
+  const initialesAuteur = auteur.initiales;
   const rubrique = rubriqueParNom(article.categorie);
   const minutes = minutesLecture(article.contenu);
 
