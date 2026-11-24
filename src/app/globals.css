@@ -105,14 +105,21 @@ button:focus-visible {
   min-height: 44px;
   color: #fff;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .menu a:hover, .acces a:not(.bouton):hover { color: var(--rouge-clair); }
 .menu a[aria-current='page'] { font-weight: 700; color: #fff; }
 
 .acces .bouton {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  flex: none;
+  white-space: nowrap;
+  line-height: 1.2;
   margin-top: 8px;
+  padding: 11px 18px;
   background: var(--rouge);
   color: #fff;
   font-weight: 600;
@@ -131,22 +138,48 @@ button:focus-visible {
 
 /* Ordinateur */
 @media (min-width: 800px) {
-  .entete-interne { display: flex; align-items: center; gap: 32px; }
+  .entete-interne {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    min-height: 64px;
+    gap: clamp(16px, 2vw, 32px);
+  }
   .burger { display: none; }
+  .logo { flex: none; }
 
   .navigation {
     display: flex;
     flex: 1;
+    min-width: 0;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
+    gap: clamp(12px, 2vw, 32px);
     padding: 0;
     border: 0;
   }
 
-  .menu, .acces { flex-direction: row; align-items: center; gap: 24px; }
-  .menu a, .acces a { min-height: 0; }
+  .menu, .acces {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 24px);
+  }
+  .menu { min-width: 0; }
+  .acces { flex: none; }
+  .menu a, .acces a, .menu-articles, .acces .lien-bouton { min-height: 0; }
   .menu a[aria-current='page'] { border-bottom: 3px solid var(--rouge-clair); padding-bottom: 2px; }
-  .acces .bouton { margin: 0; padding: 9px 18px; }
+  .acces .bouton { margin: 0; padding: 9px 16px; }
+}
+
+/* Entre 800 et 1050 px : on resserre pour garder une seule ligne lisible. */
+@media (min-width: 800px) and (max-width: 1050px) {
+  .logo { font-size: 1.4rem; }
+  .navigation { gap: 12px; }
+  .menu, .acces { gap: 12px; }
+  .menu a, .acces a, .menu-articles, .acces .lien-bouton { font-size: 0.88rem; }
+  .acces .bouton { padding: 8px 12px; font-size: 0.88rem; }
 }
 /* Page inscription */
 .intro-page { max-width: 62ch; color: #50607f; }
@@ -701,8 +734,10 @@ dialog.zoom img { display: block; width: 100%; margin-bottom: 14px; border-radiu
 .acces .lien-bouton {
   display: flex;
   align-items: center;
+  flex: none;
   min-height: 44px;
   padding: 0;
+  white-space: nowrap;
   background: none;
   border: 0;
   color: #fff;

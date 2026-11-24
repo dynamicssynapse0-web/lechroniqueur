@@ -1,6 +1,6 @@
 /* Onglet « Articles » et sous-menu des rubriques disponibles */
 
-.menu-groupe { position: relative; }
+.menu-groupe { position: relative; flex: none; }
 
 .menu-articles {
   display: flex;
@@ -13,6 +13,7 @@
   border: 0;
   color: #fff;
   font: inherit;
+  white-space: nowrap;
   cursor: pointer;
 }
 .menu-articles::after {

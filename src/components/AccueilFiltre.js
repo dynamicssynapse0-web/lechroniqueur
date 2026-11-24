@@ -160,7 +160,7 @@ export default function AccueilFiltre({ articles, rubriques = [] }) {
                 </div>
               </>
             ) : (
-              <div className="grille-articles">
+              <div className="carte-unique">
                 {visibles.map((a) => (
                   <CarteArticle key={a.id} article={a} grande />
                 ))}

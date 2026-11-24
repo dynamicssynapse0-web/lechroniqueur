@@ -51,7 +51,11 @@
 .carte-article.grande .carte-corps { padding: 20px; }
 .carte-article.grande h2 { font-size: clamp(1.5rem, 3.5vw, 2.1rem); }
 
-.grille-articles { display: grid; gap: 20px; grid-template-columns: 1fr; }
+/* Équivalent de grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 */
+.grille-articles { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+
+/* Une seule publication : carte large, jamais coincée dans une colonne de grille. */
+.carte-unique { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
 
 .article-public h1 {
   margin: 8px 0;
@@ -79,18 +83,24 @@
 }
 .auteur-encadre p { margin: 0 0 6px; }
 
-@media (min-width: 640px) {
-  .grille-articles { grid-template-columns: 1fr 1fr; }
+@media (min-width: 768px) {
+  .grille-articles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (min-width: 800px) {
-  .carte-article.grande { grid-template-columns: 1.3fr 1fr; }
-  .carte-article.grande .carte-image { aspect-ratio: auto; min-height: 320px; }
-  .carte-article.grande .carte-corps { align-content: center; padding: 28px; }
+  /* Carte horizontale : image à gauche (~42 %), texte confortable à droite (~58 %). */
+  .carte-article.grande { grid-template-columns: minmax(0, 42%) minmax(0, 58%); }
+  .carte-article.grande .carte-image {
+    aspect-ratio: auto;
+    min-height: 340px;
+    height: 100%;
+  }
+  .carte-article.grande .carte-corps { align-content: center; padding: 32px; }
+  .carte-article.grande h3 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
 }
 
-@media (min-width: 960px) {
-  .grille-articles { grid-template-columns: 1fr 1fr 1fr; }
+@media (min-width: 1024px) {
+  .grille-articles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* Accueil : grille éditoriale deux colonnes (fil + mise en avant) */
