@@ -6,12 +6,12 @@ import { lireArticle } from '../../../lib/publics';
 import { urlImage } from '../../../lib/images';
 import { formaterDate, minutesLecture } from '../../../lib/format';
 import { rubriqueParNom } from '../../../lib/rubriques';
+import { SITE_URL } from '../../../lib/site-url';
 import { auteurAffichage, lienJournaliste } from '../../../lib/journalistes';
 import './article.css';
 
 export const revalidate = 60;
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 const SLUG_VALIDE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 export async function generateMetadata({ params }) {
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
   const image = urlImage(article.image_path);
   const auteur = article.auteur;
   const nomAuteur = auteur ? `${auteur.prenom} ${auteur.nom}`.trim() : '';
-  const urlAuteur = auteur ? `${SITE}${lienJournaliste(auteur)}` : '';
+  const urlAuteur = auteur ? `${SITE_URL}${lienJournaliste(auteur)}` : '';
 
   return {
     title: article.titre,
@@ -79,11 +79,11 @@ export default async function PageArticle({ params }) {
     author: {
       '@type': 'Person',
       name: nomAuteur,
-      url: lienAuteur ? `${SITE}${lienAuteur}` : undefined,
+      url: lienAuteur ? `${SITE_URL}${lienAuteur}` : undefined,
       image: photoAuteur || undefined,
     },
     publisher: { '@type': 'Organization', name: 'lechroniqueur' },
-    mainEntityOfPage: `${SITE}/article/${article.slug}`,
+    mainEntityOfPage: `${SITE_URL}/article/${article.slug}`,
     articleSection: article.categorie || undefined,
     inLanguage: 'fr',
   };

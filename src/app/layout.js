@@ -3,13 +3,12 @@ import './publics.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { lireRubriquesDisponibles } from '../lib/publics';
+import { SITE_URL } from '../lib/site-url';
 
 export const revalidate = 60;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
 export const metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'lechroniqueur : la plateforme des journalistes',
     template: '%s | lechroniqueur',

@@ -12,11 +12,10 @@ import {
   idDepuisParam,
 } from '../../../lib/journalistes';
 import { urlPhoto } from '../../../lib/photos';
+import { SITE_URL } from '../../../lib/site-url';
 import './profil.css';
 
 export const revalidate = 60;
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -73,7 +72,7 @@ export default async function ProfilJournaliste({ params }) {
     jobTitle: 'Journaliste',
     description: j.bio || undefined,
     image: photo || undefined,
-    url: `${SITE}${canonique}`,
+    url: `${SITE_URL}${canonique}`,
     worksFor: j.media ? { '@type': 'Organization', name: j.media } : undefined,
     address:
       j.ville || j.pays

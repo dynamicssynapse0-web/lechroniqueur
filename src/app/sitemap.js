@@ -1,8 +1,7 @@
 import { creerClientPublic } from '../lib/supabase/public';
 import { RUBRIQUES } from '../lib/rubriques';
 import { lienJournaliste } from '../lib/journalistes';
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+import { SITE_URL } from '../lib/site-url';
 
 export const revalidate = 3600;
 
@@ -30,14 +29,14 @@ export default async function sitemap() {
     '/mentions-legales',
     '/confidentialite',
     '/conditions',
-  ].map((p) => ({ url: `${SITE}${p}` }));
-  const rubriques = RUBRIQUES.map((r) => ({ url: `${SITE}/rubrique/${r.slug}` }));
+  ].map((p) => ({ url: `${SITE_URL}${p}` }));
+  const rubriques = RUBRIQUES.map((r) => ({ url: `${SITE_URL}/rubrique/${r.slug}` }));
   const articles = (data ?? []).map((a) => ({
-    url: `${SITE}/article/${a.slug}`,
+    url: `${SITE_URL}/article/${a.slug}`,
     lastModified: new Date(a.updated_at),
   }));
   const profils = (journalistes ?? []).map((j) => ({
-    url: `${SITE}${lienJournaliste(j)}`,
+    url: `${SITE_URL}${lienJournaliste(j)}`,
   }));
 
   return [...pages, ...rubriques, ...articles, ...profils];

@@ -1,7 +1,6 @@
 import Link from 'next/link';
+import { SITE_URL } from '../../lib/site-url';
 import './a-propos.css';
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata = {
   title: 'À propos',
@@ -15,9 +14,9 @@ export default function APropos() {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
     name: 'À propos de lechroniqueur',
-    url: `${SITE}/a-propos`,
+    url: `${SITE_URL}/a-propos`,
     inLanguage: 'fr',
-    mainEntity: { '@type': 'Organization', name: 'lechroniqueur', url: SITE },
+    mainEntity: { '@type': 'Organization', name: 'lechroniqueur', url: SITE_URL },
   };
 
   return (
