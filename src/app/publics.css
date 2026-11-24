@@ -280,4 +280,7 @@
   }
   .fil-publications { grid-column: 1 / span 4; order: 1; }
   .une-colonne { grid-column: 5 / span 8; order: 2; }
+
+  /* Sans colonne de fil : la mise en avant occupe toute la largeur. */
+  .accueil-editorial.sans-fil .une-colonne { grid-column: 1 / -1; }
 }

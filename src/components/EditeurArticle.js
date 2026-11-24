@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { creerClientNavigateur } from '../lib/supabase/client';
+import { revalidateArticlesPublies } from '../app/espace/actions';
 
 const CATEGORIES = [
   'Politique', 'Société', 'Économie', 'International', 'Sport',
@@ -289,6 +290,14 @@ export default function EditeurArticle({ utilisateurId, auteur, articleInitial =
           ? `Article publié à ${heure()}. Adresse : /article/${data.slug}`
           : `Brouillon enregistré à ${heure()}.`
       );
+
+      if (data.statut === 'publie') {
+        try {
+          await revalidateArticlesPublies();
+        } catch {
+          // Si l'invalidation échoue, l'ISR 60 s reprendra le relais.
+        }
+      }
     } finally {
       setEnCours(false);
     }
@@ -314,6 +323,12 @@ export default function EditeurArticle({ utilisateurId, auteur, articleInitial =
     }
     setStatut('brouillon');
     setMessage(`L’article n’est plus public : il est repassé en brouillon (${heure()}).`);
+
+    try {
+      await revalidateArticlesPublies();
+    } catch {
+      // Si l'invalidation échoue, l'ISR 60 s reprendra le relais.
+    }
   }
 
   const titreAffiche = valeurs.titre.trim() || 'Titre de votre article';

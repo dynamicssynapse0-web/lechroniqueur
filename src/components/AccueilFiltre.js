@@ -40,6 +40,16 @@ export default function AccueilFiltre({ articles, rubriques = [] }) {
     setRubrique('');
   }
 
+  const avecUne = visibles.length >= 2;
+  const avecFil = visibles.length > 4;
+  const titreResultats = actif
+    ? visibles.length > 1
+      ? 'Articles correspondants'
+      : 'Article correspondant'
+    : avecUne
+      ? 'À la une'
+      : 'Article publié';
+
   return (
     <div className="accueil-filtre">
       <div className="filtres-articles" role="search">
@@ -101,53 +111,64 @@ export default function AccueilFiltre({ articles, rubriques = [] }) {
       {visibles.length === 0 ? (
         <p className="vide">Aucun article trouvé.</p>
       ) : (
-        <div className="accueil-editorial">
+        <div className={avecFil ? 'accueil-editorial' : 'accueil-editorial sans-fil'}>
           <section className="une-colonne" aria-labelledby="titre-une">
             <h2 id="titre-une" className="titre-section titre-colonne">
-              {actif ? 'Articles correspondants' : 'À la une'}
+              {titreResultats}
             </h2>
 
-            <article className="une-principale">
-              {visibles[0].imageUrl && (
-                <Link
-                  href={visibles[0].lien}
-                  className="une-principale-image"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={visibles[0].imageUrl} alt="" />
-                </Link>
-              )}
+            {avecUne ? (
+              <>
+                <article className="une-principale">
+                  {visibles[0].imageUrl && (
+                    <Link
+                      href={visibles[0].lien}
+                      className="une-principale-image"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={visibles[0].imageUrl} alt="" />
+                    </Link>
+                  )}
 
-              <div className="une-principale-corps">
-                {visibles[0].categorie && (
-                  <p className="etiquette-rubrique">{visibles[0].categorie}</p>
-                )}
-                <h3>
-                  <Link href={visibles[0].lien}>{visibles[0].titre}</Link>
-                </h3>
-                {visibles[0].resume && <p className="carte-resume">{visibles[0].resume}</p>}
-                <AuteurArticle vue={visibles[0]} className="une-principale-auteur" />
-                <Link href={visibles[0].lien} className="btn-principal btn-lien une-principale-lire">
-                  Lire l’article
-                </Link>
-              </div>
-            </article>
+                  <div className="une-principale-corps">
+                    {visibles[0].categorie && (
+                      <p className="etiquette-rubrique">{visibles[0].categorie}</p>
+                    )}
+                    <h3>
+                      <Link href={visibles[0].lien}>{visibles[0].titre}</Link>
+                    </h3>
+                    {visibles[0].resume && <p className="carte-resume">{visibles[0].resume}</p>}
+                    <AuteurArticle vue={visibles[0]} className="une-principale-auteur" />
+                    <Link
+                      href={visibles[0].lien}
+                      className="btn-principal btn-lien une-principale-lire"
+                    >
+                      Lire l’article
+                    </Link>
+                  </div>
+                </article>
 
-            {visibles.length > 1 && (
-              <div className="une-suite">
-                <h3 className="sous-titre-colonne">À découvrir aussi</h3>
-                <div className="grille-a-la-une">
-                  {visibles.slice(1, 4).map((a) => (
-                    <CarteArticle key={a.id} article={a} />
-                  ))}
+                <div className="une-suite">
+                  <h3 className="sous-titre-colonne">À découvrir aussi</h3>
+                  <div className="grille-a-la-une">
+                    {visibles.slice(1, 4).map((a) => (
+                      <CarteArticle key={a.id} article={a} />
+                    ))}
+                  </div>
                 </div>
+              </>
+            ) : (
+              <div className="grille-articles">
+                {visibles.map((a) => (
+                  <CarteArticle key={a.id} article={a} grande />
+                ))}
               </div>
             )}
           </section>
 
-          {visibles.length > 4 && (
+          {avecFil && (
             <section className="fil-publications" aria-labelledby="titre-fil">
               <h2 id="titre-fil" className="titre-section titre-colonne">
                 Dernières publications
