@@ -61,8 +61,8 @@ export async function enregistrerProfil(valeurs) {
     await supabase.storage.from('photos-profil').remove([ancienne]);
   }
 
-  // Les pages publiques se mettent à jour tout de suite.
-  revalidatePath('/');
+  // Les pages publiques et le menu des rubriques se mettent à jour tout de suite.
+  revalidatePath('/', 'layout');
   revalidatePath('/journalistes');
   revalidatePath('/journalistes/[slug]', 'page');
   revalidatePath('/article/[slug]', 'page');

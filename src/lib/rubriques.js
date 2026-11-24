@@ -13,3 +13,9 @@ export const RUBRIQUES = [
 
 export const rubriqueParSlug = (slug) => RUBRIQUES.find((r) => r.slug === slug);
 export const rubriqueParNom = (nom) => RUBRIQUES.find((r) => r.nom === nom);
+
+// Ne garde que les rubriques réellement alimentées par au moins un article.
+export function rubriquesDepuisArticles(articles) {
+  const noms = new Set(articles.map((a) => a.categorie).filter(Boolean));
+  return RUBRIQUES.filter((r) => noms.has(r.nom));
+}

@@ -6,9 +6,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { creerClientNavigateur } from '../lib/supabase/client';
 import { destinationApresConnexion } from '../lib/destination';
 import './header-statut.css';
+import './header-menu.css';
 
 const liens = [
-  { href: '/', texte: 'Accueil' },
   { href: '/journalistes', texte: 'Journalistes' },
   { href: '/a-propos', texte: 'À propos' },
 ];
@@ -20,11 +20,13 @@ const LIBELLES_STATUT = {
   refuse: 'Demande refusée',
 };
 
-export default function Header() {
+export default function Header({ rubriques = [] }) {
   const [ouvert, setOuvert] = useState(false);
+  const [menuArticlesOuvert, setMenuArticlesOuvert] = useState(false);
   const [moi, setMoi] = useState(null);
   const utilisateur = useRef(null);
   const dernierStatut = useRef(null);
+  const menuArticles = useRef(null);
   const chemin = usePathname();
   const router = useRouter();
 
@@ -33,10 +35,22 @@ export default function Header() {
 
   useEffect(() => {
     const surTouche = (e) => {
-      if (e.key === 'Escape') setOuvert(false);
+      if (e.key === 'Escape') {
+        setOuvert(false);
+        setMenuArticlesOuvert(false);
+      }
+    };
+    const horsMenu = (e) => {
+      if (menuArticles.current && !menuArticles.current.contains(e.target)) {
+        setMenuArticlesOuvert(false);
+      }
     };
     document.addEventListener('keydown', surTouche);
-    return () => document.removeEventListener('keydown', surTouche);
+    document.addEventListener('pointerdown', horsMenu);
+    return () => {
+      document.removeEventListener('keydown', surTouche);
+      document.removeEventListener('pointerdown', horsMenu);
+    };
   }, []);
 
   useEffect(() => {
@@ -101,11 +115,13 @@ export default function Header() {
     await supabase.auth.signOut();
     setMoi(null);
     setOuvert(false);
+    setMenuArticlesOuvert(false);
     router.push('/');
     router.refresh();
   }
 
   const enCours = moi && moi.role !== 'admin' && moi.statut !== 'actif';
+  const groupeArticlesActif = chemin.startsWith('/rubrique');
 
   return (
     <header className="entete">
@@ -128,10 +144,49 @@ export default function Header() {
           id="navigation"
           className={ouvert ? 'navigation ouvert' : 'navigation'}
           onClick={(e) => {
-            if (e.target.closest('a')) setOuvert(false);
+            if (e.target.closest('a')) {
+              setOuvert(false);
+              setMenuArticlesOuvert(false);
+            }
           }}
         >
           <nav className="menu" aria-label="Navigation principale">
+            <Link
+              href="/"
+              aria-current={estActif('/') ? 'page' : undefined}
+            >
+              Accueil
+            </Link>
+
+            <div
+              ref={menuArticles}
+              className={[
+                'menu-groupe',
+                groupeArticlesActif ? 'actif' : '',
+                menuArticlesOuvert ? 'ouvert' : '',
+              ].filter(Boolean).join(' ')}
+            >
+              <button
+                type="button"
+                className="menu-articles"
+                aria-haspopup="true"
+                aria-expanded={menuArticlesOuvert}
+                aria-controls="sous-menu-articles"
+                onClick={() => setMenuArticlesOuvert((v) => !v)}
+              >
+                Articles
+              </button>
+
+              <div id="sous-menu-articles" className="sous-menu-articles">
+                <Link href="/#articles">Tous les articles</Link>
+                {rubriques.map((r) => (
+                  <Link key={r.slug} href={`/rubrique/${r.slug}`}>
+                    {r.nom}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {liens.map((lien) => (
               <Link
                 key={lien.href}

@@ -99,6 +99,51 @@
 .une-colonne { order: 1; }
 .fil-publications { order: 2; }
 
+/* Recherche + pilules de rubriques (filtrage instantané de l'accueil) */
+.accueil-filtre { scroll-margin-top: 24px; }
+.filtres-articles {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0 16px;
+}
+.pilules-rubriques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pilule-rubrique {
+  min-height: 36px;
+  padding: 6px 14px;
+  background: #fff;
+  border: 1px solid var(--ligne);
+  border-radius: 999px;
+  color: var(--nuit);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.pilule-rubrique:hover { border-color: var(--bleu); color: var(--bleu); }
+.pilule-rubrique.active {
+  background: var(--rouge);
+  border-color: var(--rouge);
+  color: #fff;
+  font-weight: 700;
+}
+.filtres-resume {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  background: #eef2f9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+.filtres-resume p { margin: 0; }
+.filtres-resume .etiquette-rubrique { display: inline; }
+
 .titre-colonne {
   margin: 0 0 16px;
   padding-left: 12px;

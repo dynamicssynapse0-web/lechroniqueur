@@ -1,14 +1,14 @@
 import { cache } from 'react';
 import { creerClientPublic } from './supabase/public';
+import { rubriquesDepuisArticles } from './rubriques';
+import { urlImage } from './images';
+
+// Conservé pour les appelants existants ; l'implémentation vit dans `lib/images.js`
+// afin de pouvoir être importée depuis un composant client sans charger Supabase.
+export { urlImage };
 
 const COLONNES_LISTE =
   'id, titre, slug, resume, categorie, image_path, image_alt, publie_le, auteur_id';
-
-export function urlImage(chemin) {
-  return chemin
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/couvertures/${chemin}`
-    : '';
-}
 
 // Les articles ne stockent pas le nom ni l'avatar : auteur_id relie la ligne à
 // la table `journalistes` (le même UUID que `profiles` pour le compte auteur).
@@ -39,6 +39,18 @@ export async function lireArticlesPublies({ limite = 12, categorie = null } = {}
   const { data, error } = await requete;
   if (error || !data) return [];
   return ajouterAuteurs(supabase, data);
+}
+
+// Rubriques du menu : on ne propose que celles qui ont au moins un article publié.
+export async function lireRubriquesDisponibles() {
+  const supabase = creerClientPublic();
+  const { data, error } = await supabase
+    .from('articles')
+    .select('categorie')
+    .eq('statut', 'publie');
+
+  if (error || !data) return [];
+  return rubriquesDepuisArticles(data);
 }
 
 export const lireArticle = cache(async (slug) => {

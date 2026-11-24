@@ -1,0 +1,75 @@
+/* Onglet « Articles » et sous-menu des rubriques disponibles */
+
+.menu-groupe { position: relative; }
+
+.menu-articles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.menu-articles::after {
+  content: '▾';
+  font-size: 0.75em;
+  line-height: 1;
+}
+.menu-articles:hover { color: var(--rouge-clair); }
+.menu-groupe.actif > .menu-articles { font-weight: 700; color: #fff; }
+
+.sous-menu-articles { display: none; }
+
+.menu-groupe.ouvert .sous-menu-articles {
+  display: grid;
+  gap: 2px;
+  margin: 4px 0 8px 12px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+.sous-menu-articles a {
+  display: block;
+  padding: 8px 10px;
+  color: #fff;
+  font-size: 0.92rem;
+  text-decoration: none;
+  border-radius: 4px;
+}
+.sous-menu-articles a:first-child { font-weight: 700; color: var(--rouge-clair); }
+.sous-menu-articles a:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+
+/* Ordinateur : le survol ouvre le menu, le clic le garde ouvert après le survol. */
+@media (min-width: 800px) {
+  .menu-articles { width: auto; min-height: 0; }
+
+  .menu-groupe:hover .sous-menu-articles,
+  .menu-groupe.ouvert .sous-menu-articles {
+    display: grid;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 20;
+    gap: 2px;
+    min-width: 220px;
+    margin: 0;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid var(--ligne);
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(11, 23, 51, 0.18);
+  }
+  .sous-menu-articles a { color: var(--nuit); }
+  .sous-menu-articles a:first-child { color: var(--rouge-fonce); }
+  .sous-menu-articles a:hover { background: #f2f5fb; color: var(--rouge-fonce); }
+
+  .menu-groupe.actif > .menu-articles {
+    border-bottom: 3px solid var(--rouge-clair);
+    padding-bottom: 2px;
+  }
+}

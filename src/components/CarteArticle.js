@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Avatar from './Avatar';
-import { urlImage } from '../lib/publics';
+import { urlImage } from '../lib/images';
 import { auteurAffichage } from '../lib/journalistes';
 import { formaterDate } from '../lib/format';
 import './carte-article.css';

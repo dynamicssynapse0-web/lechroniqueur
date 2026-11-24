@@ -42,7 +42,8 @@ export async function supprimerArticle(id) {
     await supabase.storage.from('couvertures').remove([article.image_path]);
   }
 
-  revalidatePath('/');
+  // Invalide aussi le layout racine : le menu « Articles » dépend des rubriques publiées.
+  revalidatePath('/', 'layout');
   revalidatePath('/espace');
   revalidatePath('/rubrique/[slug]', 'page');
   revalidatePath('/article/[slug]', 'page');
