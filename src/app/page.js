@@ -1,69 +1,73 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from 'next/link';
+import UneEtPile from '../components/UneEtPile';
+import CarteArticle from '../components/CarteArticle';
+import { lireArticlesPublies, urlImage } from '../lib/publics';
+import { RUBRIQUES } from '../lib/rubriques';
+import { urlPhoto } from '../lib/photos';
+import { formaterDate } from '../lib/format';
+import { nomComplet, initiales, lienJournaliste } from '../lib/journalistes';
 
-export default function Home() {
+export const revalidate = 60;
+
+export const metadata = {
+  alternates: { canonical: '/' },
+};
+
+// Nombre d'articles dans le bloc « à la une » (les suivants vont dans la grille).
+const NB_UNE = 8;
+
+function versVue(a) {
+  const j = a.auteur;
+  return {
+    id: a.id,
+    titre: a.titre,
+    resume: a.resume,
+    categorie: a.categorie,
+    lien: `/article/${a.slug}`,
+    imageUrl: urlImage(a.image_path),
+    dateIso: a.publie_le,
+    dateTexte: formaterDate(a.publie_le),
+    auteurNom: j ? nomComplet(j) : 'Rédaction lechroniqueur',
+    auteurMedia: j?.media || '',
+    auteurLien: j ? lienJournaliste(j) : null,
+    photoUrl: j ? urlPhoto(j.photo_path) : '',
+    initiales: j ? initiales(j) : 'L',
+  };
+}
+
+export default async function Accueil() {
+  const articles = await lireArticlesPublies({ limite: 20 });
+  const une = articles.slice(0, NB_UNE).map(versVue);
+  const suite = articles.slice(NB_UNE);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.js</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <section>
+      <h1>Les articles de ceux qui font l’actualité</h1>
+
+      <nav aria-label="Rubriques" className="rubriques">
+        <ul>
+          {RUBRIQUES.map((r) => (
+            <li key={r.slug}>
+              <Link href={`/rubrique/${r.slug}`}>{r.nom}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {une.length === 0 && <p className="vide">Aucun article n’est publié pour le moment.</p>}
+
+      {une.length > 0 && <UneEtPile articles={une} />}
+
+      {suite.length > 0 && (
+        <>
+          <h2 className="titre-section">Derniers articles</h2>
+          <div className="grille-articles">
+            {suite.map((a) => (
+              <CarteArticle key={a.id} article={a} />
+            ))}
+          </div>
+        </>
+      )}
+    </section>
   );
 }

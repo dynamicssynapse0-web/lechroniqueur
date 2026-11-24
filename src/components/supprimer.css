@@ -1,0 +1,52 @@
+/* Suppression d'un article */
+.actions-ligne { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.btn-supprimer {
+  min-height: 46px;
+  padding: 0 20px;
+  background: #fff;
+  color: var(--rouge-fonce);
+  border: 2px solid var(--rouge);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-supprimer:hover { background: #fff1f3; }
+
+.btn-danger {
+  min-height: 46px;
+  padding: 0 20px;
+  background: var(--rouge);
+  color: #fff;
+  border: 2px solid var(--rouge);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-danger:hover:not(:disabled) { background: var(--rouge-fonce); border-color: var(--rouge-fonce); }
+.btn-danger:disabled { opacity: 0.6; cursor: wait; }
+
+dialog.dialogue-confirmation {
+  width: min(92vw, 480px);
+  padding: 20px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--encre);
+}
+dialog.dialogue-confirmation::backdrop { background: rgba(11, 23, 51, 0.78); }
+dialog.dialogue-confirmation h2 {
+  margin: 0 0 12px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  color: var(--nuit);
+}
+dialog.dialogue-confirmation p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: var(--encre);
+  overflow-wrap: anywhere;
+}
+dialog.dialogue-confirmation .erreur { color: var(--rouge-fonce); }
+.boutons-dialogue { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; justify-content: flex-end; }

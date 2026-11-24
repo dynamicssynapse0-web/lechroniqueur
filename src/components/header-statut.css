@@ -1,0 +1,44 @@
+/* Pastille de statut dans le menu */
+.entete .acces a.pastille-statut {
+  --pastille-fond: #fff;
+  --pastille-texte: var(--nuit);
+  --pastille-point: var(--rouge);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 4px 14px;
+  background: var(--pastille-fond);
+  color: var(--pastille-texte);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.entete .acces a.pastille-statut::before {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pastille-point);
+}
+.entete .acces a.pastille-statut[data-statut='accepte'] {
+  --pastille-fond: #e3ebff;
+  --pastille-texte: var(--bleu);
+  --pastille-point: var(--bleu);
+}
+.entete .acces a.pastille-statut[data-statut='refuse'] {
+  --pastille-fond: #ffe3e7;
+  --pastille-texte: var(--rouge-fonce);
+  --pastille-point: var(--rouge-fonce);
+}
+.entete .acces a.pastille-statut:hover {
+  color: var(--pastille-texte);
+  text-decoration: underline;
+}
+
+@media (min-width: 800px) {
+  .entete .acces a.pastille-statut { min-height: 0; }
+}

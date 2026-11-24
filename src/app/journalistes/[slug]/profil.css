@@ -1,0 +1,43 @@
+/* Profil public d'un journaliste */
+.retour {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bleu);
+  font-weight: 600;
+}
+
+.profil-tete {
+  display: grid;
+  gap: 16px;
+  margin: 8px 0 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--ligne);
+  border-top: 4px solid var(--rouge);
+  border-radius: 8px;
+}
+
+.profil-avatar {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border: 4px solid var(--rouge);
+  border-radius: 50%;
+  background: var(--nuit);
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.profil-tete h1 { margin: 0 0 4px; overflow-wrap: anywhere; }
+.profil-tete p { margin: 4px 0 0; }
+.profil-media { font-size: 1.1rem; font-weight: 700; color: var(--bleu); overflow-wrap: anywhere; }
+.profil-lieu { color: #50607f; }
+.profil-bio { margin-top: 12px !important; max-width: 68ch; white-space: pre-line; overflow-wrap: anywhere; }
+
+@media (min-width: 640px) {
+  .profil-tete { grid-template-columns: auto 1fr; align-items: center; gap: 24px; padding: 24px; }
+}

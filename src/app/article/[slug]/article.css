@@ -1,0 +1,19 @@
+/* Liens et photo de l'auteur */
+.article-public .signature a {
+  color: var(--bleu);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-public .signature a:hover { color: var(--rouge-fonce); }
+
+.signature-bloc { display: flex; align-items: center; gap: 12px; margin: 6px 0 4px; }
+
+.auteur-ligne { display: flex; gap: 16px; align-items: flex-start; }
+.auteur-ligne > div { min-width: 0; }
+
+.auteur-encadre a { color: var(--bleu); }
+.auteur-encadre strong a { color: var(--nuit); text-decoration: none; }
+.auteur-encadre strong a:hover { color: var(--rouge-fonce); text-decoration: underline; }
+.auteur-bio { white-space: pre-line; overflow-wrap: anywhere; }
+.auteur-lien { font-weight: 600; }

@@ -1,0 +1,43 @@
+/* Pages de texte : mentions légales, confidentialité, conditions, contact */
+.page-texte { max-width: 760px; }
+.page-texte h1 { margin-bottom: 0; }
+.page-texte .maj { margin: 12px 0 20px; font-size: 0.9rem; color: #50607f; }
+
+.page-texte h2 {
+  margin: 36px 0 10px;
+  padding-left: 12px;
+  border-left: 5px solid var(--rouge);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  color: var(--nuit);
+}
+.page-texte p, .page-texte li { max-width: 68ch; }
+.page-texte ul { margin: 8px 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.page-texte a { color: var(--bleu); font-weight: 600; }
+
+.page-texte dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--ligne);
+  border-radius: 8px;
+}
+.page-texte dt { font-size: 0.85rem; color: #50607f; }
+.page-texte dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.alerte-legale {
+  max-width: 68ch;
+  padding: 12px 14px;
+  background: #fff1f3;
+  border-left: 4px solid var(--rouge);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.actions-contact { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.page-texte .actions-contact a { text-decoration: none; }
+.page-texte .actions-contact .btn-principal { color: #fff; }
+.actions-contact .btn-principal { width: auto; max-width: none; padding: 0 24px; }

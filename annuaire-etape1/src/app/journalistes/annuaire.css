@@ -1,0 +1,87 @@
+/* Annuaire des journalistes */
+.recherche { margin: 20px 0 8px; }
+.recherche label { display: block; margin-bottom: 6px; font-weight: 600; }
+.recherche-ligne { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.recherche input[type='search'] {
+  flex: 1 1 260px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--encre);
+  background: #fff;
+  border: 1px solid #9aa8c7;
+  border-radius: 4px;
+}
+.recherche input[type='search']:focus-visible {
+  outline: 3px solid var(--bleu);
+  outline-offset: 1px;
+  border-color: var(--bleu);
+}
+.recherche .btn-principal { width: auto; min-height: 48px; padding: 0 24px; }
+.recherche .effacer {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 8px;
+  color: var(--bleu);
+  font-weight: 600;
+}
+
+.compte-resultats { margin: 16px 0; color: #50607f; }
+
+.annuaire {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.fiche {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--ligne);
+  border-top: 4px solid var(--bleu);
+  border-radius: 8px;
+}
+
+.avatar {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--rouge);
+  border-radius: 50%;
+  background: var(--nuit);
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.fiche h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  color: var(--nuit);
+  overflow-wrap: anywhere;
+}
+.fiche p { margin: 4px 0 0; }
+.fiche-media { font-weight: 600; color: var(--bleu); overflow-wrap: anywhere; }
+.fiche-lieu { font-size: 0.9rem; color: #50607f; }
+.fiche-bio { font-size: 0.95rem; color: #3a4768; }
+
+@media (min-width: 700px) {
+  .annuaire { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 960px) {
+  .annuaire { grid-template-columns: 1fr 1fr 1fr; }
+}

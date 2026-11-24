@@ -1,0 +1,83 @@
+/* Page À propos */
+.a-propos { max-width: 760px; }
+
+.a-propos h1 { margin-bottom: 0; }
+
+.chapeau-page {
+  margin: 20px 0 8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--nuit);
+}
+
+.a-propos section { margin-top: 8px; }
+.a-propos p { max-width: 68ch; }
+
+.etapes-propos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  counter-reset: etape;
+}
+.etapes-propos li { position: relative; padding-left: 50px; counter-increment: etape; }
+.etapes-propos li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rouge);
+  color: #fff;
+  font-weight: 700;
+}
+.etapes-propos strong { display: block; color: var(--nuit); }
+.etapes-propos span { display: block; color: #3a4768; }
+
+.engagements { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.engagements li {
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--ligne);
+  border-left: 4px solid var(--bleu);
+  border-radius: 4px;
+  color: #3a4768;
+}
+.engagements strong { display: block; margin-bottom: 2px; color: var(--nuit); }
+
+.appel {
+  margin-top: 40px !important;
+  padding: 24px;
+  background: var(--nuit);
+  color: #fff;
+  border-top: 4px solid var(--rouge);
+  border-radius: 8px;
+}
+.appel h2 {
+  margin: 0 0 8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  color: #fff;
+}
+.appel p { margin: 0; color: #dbe3f7; }
+.appel-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.appel .btn-principal { width: auto; padding: 0 24px; }
+.btn-clair {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.btn-clair:hover { background: rgba(255, 255, 255, 0.14); }

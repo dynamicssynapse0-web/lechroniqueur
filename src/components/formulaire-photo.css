@@ -1,0 +1,38 @@
+/* Champ « photo de profil » du formulaire d'inscription */
+.depot-photo { display: grid; gap: 12px; justify-items: start; }
+
+.depot-photo .apercu-photo,
+.depot-photo .photo-vide {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+}
+.depot-photo .apercu-photo {
+  margin: 0;
+  object-fit: cover;
+  border: 3px solid var(--rouge);
+  background: #c3cde6;
+}
+.depot-photo .photo-vide {
+  display: grid;
+  place-items: center;
+  border: 2px dashed #9aa8c7;
+  background: #fff;
+  color: #50607f;
+  font-size: 2rem;
+}
+.depot-photo input[type='file'] { width: 100%; font: inherit; }
+.depot-photo input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 16px;
+  background: var(--bleu);
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Liens dans la case de consentement */
+.consentement a { color: var(--bleu); font-weight: 600; text-decoration: underline; }

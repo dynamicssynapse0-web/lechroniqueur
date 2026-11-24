@@ -1,0 +1,20 @@
+/* Liens du pied de page */
+.pied-liens ul {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 20px;
+}
+.pied-liens a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pied-liens a:hover { color: var(--rouge-clair); }
+.pied p { margin: 0; }
