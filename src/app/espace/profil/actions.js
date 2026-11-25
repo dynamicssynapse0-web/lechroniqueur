@@ -61,14 +61,16 @@ export async function enregistrerProfil(valeurs) {
       p_pays: pays,
     });
     error = reessai.error;
+  }
 
-    if (!error && photoPath) {
-      const { error: photoErr } = await supabase
-        .from('profiles')
-        .update({ photo_path: photoPath })
-        .eq('id', utilisateurId);
-      error = photoErr;
-    }
+  // S'assure que la nouvelle photo est visible partout (profil, annuaire, articles),
+  // même si la RPC en base ne synchronise pas encore journalistes.photo_path.
+  if (!error && photoPath) {
+    const [{ error: errProfil }, { error: errJournaliste }] = await Promise.all([
+      supabase.from('profiles').update({ photo_path: photoPath }).eq('id', utilisateurId),
+      supabase.from('journalistes').update({ photo_path: photoPath }).eq('id', utilisateurId),
+    ]);
+    error = errProfil || errJournaliste;
   }
 
   if (error) {
