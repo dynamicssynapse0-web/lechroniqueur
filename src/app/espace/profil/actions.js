@@ -46,13 +46,33 @@ export async function enregistrerProfil(valeurs) {
     ancienne = data?.photo_path ?? '';
   }
 
-  const { error } = await supabase.rpc('modifier_mon_profil', {
+  let { error } = await supabase.rpc('modifier_mon_profil', {
     p_bio: bio,
     p_ville: ville,
     p_pays: pays,
     p_photo: photoPath || null,
   });
+
+  // Compatibilité : certaines bases ont encore l'ancienne fonction sans p_photo.
+  if (error && /p_photo|function|argument|signature/i.test(error.message || '')) {
+    const reessai = await supabase.rpc('modifier_mon_profil', {
+      p_bio: bio,
+      p_ville: ville,
+      p_pays: pays,
+    });
+    error = reessai.error;
+
+    if (!error && photoPath) {
+      const { error: photoErr } = await supabase
+        .from('profiles')
+        .update({ photo_path: photoPath })
+        .eq('id', utilisateurId);
+      error = photoErr;
+    }
+  }
+
   if (error) {
+    console.error('Erreur enregistrement profil:', error);
     return { erreur: 'L’enregistrement a échoué. Réessayez dans un instant.' };
   }
 

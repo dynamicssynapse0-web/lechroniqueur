@@ -2,8 +2,8 @@
 import { urlPhoto } from './photos';
 
 // Libellé affiché quand un article n'a pas de journaliste associé, ou quand son nom est vide.
-export const NOM_REDACTION = 'Rédaction MediraPress';
-const INITIALES_REDACTION = 'RM';
+export const NOM_REDACTION = 'Rédaction Lechroniqueur';
+const INITIALES_REDACTION = 'RL';
 
 // Minuscules, sans accents : « Aïcha » et « aicha » se retrouvent.
 export function normaliser(texte) {
