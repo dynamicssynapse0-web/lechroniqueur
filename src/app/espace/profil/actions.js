@@ -52,6 +52,7 @@ export async function enregistrerProfil(valeurs) {
     p_pays: pays,
     p_photo: photoPath || null,
   });
+  let rpcOk = !error;
 
   // Compatibilité : certaines bases ont encore l'ancienne fonction sans p_photo.
   if (error && /p_photo|function|argument|signature/i.test(error.message || '')) {
@@ -61,21 +62,28 @@ export async function enregistrerProfil(valeurs) {
       p_pays: pays,
     });
     error = reessai.error;
+    rpcOk = !error;
   }
 
   // S'assure que la nouvelle photo est visible partout (profil, annuaire, articles),
   // même si la RPC en base ne synchronise pas encore journalistes.photo_path.
-  if (!error && photoPath) {
+  if (rpcOk && photoPath) {
     const [{ error: errProfil }, { error: errJournaliste }] = await Promise.all([
       supabase.from('profiles').update({ photo_path: photoPath }).eq('id', utilisateurId),
       supabase.from('journalistes').update({ photo_path: photoPath }).eq('id', utilisateurId),
     ]);
-    error = errProfil || errJournaliste;
+    const syncErr = errProfil || errJournaliste;
+    if (syncErr) {
+      // Ne pas faire échouer l'enregistrement si la RPC a déjà réussi :
+      // l'échec vient souvent d'une policy RLS sur une mise à jour directe.
+      console.warn('Sync photo profil après RPC:', syncErr);
+    }
   }
 
   if (error) {
     console.error('Erreur enregistrement profil:', error);
-    return { erreur: 'L’enregistrement a échoué. Réessayez dans un instant.' };
+    const detail = typeof error.message === 'string' && error.message ? ` (${error.message})` : '';
+    return { erreur: `L’enregistrement a échoué${detail}. Réessayez dans un instant.` };
   }
 
   // Seules les photos du dossier personnel peuvent être supprimées par leur auteur.
