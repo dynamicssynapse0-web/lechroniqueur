@@ -133,7 +133,7 @@ export default async function PageArticle({ params }) {
               <div>
                 <p>
                   <strong>
-                    <Link href={lienAuteur}>{nomAuteur}</Link>
+                    {lienAuteur ? <Link href={lienAuteur}>{nomAuteur}</Link> : nomAuteur}
                   </strong>
                   {auteur.media ? `, ${auteur.media}` : ''}
                   {auteur.ville || auteur.pays
@@ -141,11 +141,13 @@ export default async function PageArticle({ params }) {
                     : ''}
                 </p>
                 {auteur.bio && <p className="auteur-bio">{auteur.bio}</p>}
-                <p>
-                  <Link href={lienAuteur} className="auteur-lien">
-                    Voir son profil et tous ses articles →
-                  </Link>
-                </p>
+                {lienAuteur && (
+                  <p>
+                    <Link href={lienAuteur} className="auteur-lien">
+                      Voir son profil et tous ses articles →
+                    </Link>
+                  </p>
+                )}
               </div>
             </div>
           </aside>
