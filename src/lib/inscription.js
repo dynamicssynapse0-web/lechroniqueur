@@ -63,13 +63,30 @@ export async function envoyerDemande(valeurs, carte, photo) {
   });
 
   if (error) {
+    // Le message générique masquait la vraie cause : on la journalise pour diagnostic.
+    console.error('[inscription] échec signUp', {
+      code: error.code,
+      status: error.status,
+      message: error.message,
+    });
+
     if (error.status === 429 || (error.code || '').includes('rate_limit')) {
       return 'Trop de tentatives. Patientez quelques minutes avant de réessayer.';
     }
     if (error.code === 'weak_password') {
       return 'Ce mot de passe est trop faible. Choisissez-en un plus long ou plus varié.';
     }
-    return 'L’inscription a échoué. Réessayez dans un instant.';
+    if (
+      error.code === 'email_exists' ||
+      error.status === 422 ||
+      /already registered|already exists/i.test(error.message || '')
+    ) {
+      return 'Cette adresse email est déjà inscrite. Connectez-vous ou utilisez une autre adresse.';
+    }
+    if (/database error|failed to create user/i.test(error.message || '')) {
+      return 'La création du profil a échoué côté base de données. Réessayez dans un instant.';
+    }
+    return `L’inscription a échoué : ${error.message || 'réessayez dans un instant.'}`;
   }
 
   return null;
