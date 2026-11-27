@@ -31,12 +31,16 @@ export default function Confidentialite() {
         <li>votre prénom et votre nom ;</li>
         <li>le nom de votre média ;</li>
         <li>votre adresse email et votre mot de passe ;</li>
+        <li>
+          votre numéro de téléphone WhatsApp, utilisé uniquement pour vous envoyer
+          la décision sur votre demande ;
+        </li>
         <li>votre numéro de carte de presse (facultatif) et l’image de votre carte de presse ;</li>
         <li>votre photo de profil.</li>
       </ul>
       <p>
-        <strong>Quand vous complétez votre profil :</strong> votre ville, votre pays et votre
-        numéro de téléphone.
+        <strong>Quand vous complétez votre profil :</strong> votre ville et votre pays, ainsi
+        que la mise à jour éventuelle de votre numéro de téléphone.
       </p>
       <p>
         <strong>Quand vous utilisez votre espace :</strong> votre biographie, vos articles et
@@ -77,7 +81,8 @@ export default function Confidentialite() {
       <p>
         Les données privées ne sont consultées que par l’équipe {I.nom}, pour vérifier votre
         statut et gérer le service. Nous faisons appel à des prestataires techniques : Supabase
-        (base de données, authentification et stockage des fichiers) et l’hébergeur du site.
+        (base de données, authentification et stockage des fichiers), Resend (emails de décision),
+        Meta WhatsApp (messages de décision) et l’hébergeur du site.
         Nous ne vendons pas vos données et ne les utilisons pas à des fins publicitaires.
       </p>
       <p>Vos données sont stockées dans la région suivante : {I.regionDonnees}.</p>

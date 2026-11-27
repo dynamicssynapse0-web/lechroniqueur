@@ -123,11 +123,30 @@ export default function AdminDemandes({ demandesInitiales }) {
       )
     );
 
+    let notifications = '';
+    try {
+      const reponse = await fetch('/api/notifier-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: demande.id, statut }),
+      });
+      if (reponse.ok) {
+        const resultat = await reponse.json();
+        const email = resultat.email?.ok ? 'email envoyé' : 'email non envoyé';
+        const whatsapp = resultat.whatsapp?.ok ? 'WhatsApp envoyé' : 'WhatsApp indisponible';
+        notifications = ` Notification : ${email}, ${whatsapp}.`;
+      } else {
+        notifications = ' Notification indisponible.';
+      }
+    } catch {
+      notifications = ' Notification indisponible.';
+    }
+
     const nom = `${demande.prenom} ${demande.nom}`;
     if (statut === 'accepte') {
-      setAnnonce(`La demande de ${nom} est acceptée. Le journaliste verra son nouveau statut sur sa page de suivi.`);
+      setAnnonce(`La demande de ${nom} est acceptée.${notifications}`);
     } else if (statut === 'refuse') {
-      setAnnonce(`La demande de ${nom} est rejetée. Le motif apparaîtra sur sa page de suivi.`);
+      setAnnonce(`La demande de ${nom} est rejetée, avec le motif indiqué.${notifications}`);
     } else {
       setAnnonce(`La demande de ${nom} est remise en attente.`);
     }

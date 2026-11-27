@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { envoyerDemande } from '../lib/inscription';
+import { normaliserTelephone } from '../lib/telephone';
 import './formulaire-photo.css';
 
 const TYPES_ACCEPTES = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -16,6 +17,8 @@ const VALEURS_INITIALES = {
   media: '',
   email: '',
   numeroCarte: '',
+  telephone: '',
+  consentementWhatsapp: false,
   motDePasse: '',
   confirmation: '',
   accepte: false,
@@ -155,6 +158,12 @@ export default function FormulaireInscription() {
     if (!/^\S+@\S+\.\S+$/.test(valeurs.email.trim())) e.email = 'Entrez une adresse email valide.';
     if (valeurs.motDePasse.length < 8) e.motDePasse = 'Le mot de passe doit contenir au moins 8 caractères.';
     if (valeurs.confirmation !== valeurs.motDePasse) e.confirmation = 'Les deux mots de passe ne correspondent pas.';
+    if (!normaliserTelephone(valeurs.telephone)) {
+      e.telephone = 'Indiquez un vrai numéro WhatsApp (+237 6XX XXX XXX).';
+    }
+    if (!valeurs.consentementWhatsapp) {
+      e.consentementWhatsapp = 'Acceptez de recevoir la décision sur WhatsApp.';
+    }
     if (!carte) e.carte = 'Ajoutez une photo de votre carte de presse.';
     if (!photo) e.photo = 'Ajoutez votre photo de profil.';
     if (!valeurs.accepte) e.accepte = 'Vous devez accepter pour continuer.';
@@ -301,6 +310,21 @@ export default function FormulaireInscription() {
             </Champ>
 
             <Champ
+              id="telephone"
+              label="Numéro WhatsApp"
+              erreur={erreurs.telephone}
+              aide="Veuillez indiquer un vrai numéro WhatsApp : il servira uniquement à vous envoyer la décision sur votre demande. Format : +237 6XX XXX XXX."
+            >
+              <input
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="+237 6XX XXX XXX"
+                {...champ('telephone', true)}
+              />
+            </Champ>
+
+            <Champ
               id="carte"
               label="Photo de votre carte de presse"
               erreur={erreurs.carte}
@@ -349,6 +373,27 @@ export default function FormulaireInscription() {
                 {photo && <p className="nom-fichier">Fichier choisi : {photo.name}</p>}
               </div>
             </Champ>
+
+            <div className="champ">
+              <label className="consentement" htmlFor="consentementWhatsapp">
+                <input
+                  type="checkbox"
+                  id="consentementWhatsapp"
+                  name="consentementWhatsapp"
+                  checked={valeurs.consentementWhatsapp}
+                  onChange={changer}
+                  aria-invalid={erreurs.consentementWhatsapp ? 'true' : undefined}
+                  aria-describedby={erreurs.consentementWhatsapp ? 'consentementWhatsapp-message' : undefined}
+                />
+                <span>
+                  J’accepte de recevoir sur ce numéro WhatsApp la décision concernant
+                  ma demande (acceptation ou refus, avec le motif en cas de refus).
+                </span>
+              </label>
+              {erreurs.consentementWhatsapp && (
+                <p className="erreur" id="consentementWhatsapp-message" role="alert">{erreurs.consentementWhatsapp}</p>
+              )}
+            </div>
 
             <div className="champ">
               <label className="consentement" htmlFor="accepte">

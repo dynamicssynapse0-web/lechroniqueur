@@ -1,4 +1,5 @@
 import { creerClientNavigateur } from './supabase/client';
+import { normaliserTelephone } from './telephone';
 
 const EXTENSIONS_CARTE = {
   'image/jpeg': 'jpg',
@@ -56,6 +57,8 @@ export async function envoyerDemande(valeurs, carte, photo) {
         nom: valeurs.nom.trim(),
         media: valeurs.media.trim(),
         numero_carte: valeurs.numeroCarte.trim(),
+        telephone: normaliserTelephone(valeurs.telephone),
+        whatsapp_consent: valeurs.consentementWhatsapp,
         carte_path: cheminCarte,
         photo_path: cheminPhoto,
       },
