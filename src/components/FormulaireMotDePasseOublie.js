@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { creerClientNavigateur } from '../lib/supabase/client';
 
 export default function FormulaireMotDePasseOublie() {
   const [email, setEmail] = useState('');
@@ -20,9 +21,18 @@ export default function FormulaireMotDePasseOublie() {
 
     setErreur('');
     setEnCours(true);
-    // Plus tard : demande de réinitialisation avec Supabase.
-    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    const supabase = creerClientNavigateur();
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/nouveau-mot-de-passe`,
+    });
+
     setEnCours(false);
+    if (error) {
+      console.error('[mot-de-passe-oublie] échec', error.message);
+      setErreur(`L’envoi a échoué : ${error.message}`);
+      return;
+    }
     setEnvoye(true);
   }
 

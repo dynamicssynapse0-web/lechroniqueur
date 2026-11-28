@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { creerClientNavigateur } from '../lib/supabase/client';
 
 export default function FormulaireNouveauMotDePasse() {
   const [motDePasse, setMotDePasse] = useState('');
@@ -10,6 +11,24 @@ export default function FormulaireNouveauMotDePasse() {
   const [erreurs, setErreurs] = useState({});
   const [enCours, setEnCours] = useState(false);
   const [termine, setTermine] = useState(false);
+  const [erreurLien, setErreurLien] = useState('');
+
+  useEffect(() => {
+    let actif = true;
+    const supabase = creerClientNavigateur();
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (actif && !data.session) {
+        setErreurLien(
+          'Votre lien de réinitialisation est invalide ou expiré. Demandez un nouvel email depuis la page « Mot de passe oublié ».'
+        );
+      }
+    });
+
+    return () => {
+      actif = false;
+    };
+  }, []);
 
   async function soumettre(evenement) {
     evenement.preventDefault();
@@ -26,9 +45,18 @@ export default function FormulaireNouveauMotDePasse() {
     }
 
     setEnCours(true);
-    // Plus tard : enregistrement du nouveau mot de passe avec Supabase.
-    await new Promise((resolve) => setTimeout(resolve, 600));
+    const supabase = creerClientNavigateur();
+    const { error } = await supabase.auth.updateUser({ password: motDePasse });
+
     setEnCours(false);
+    if (error) {
+      console.error('[nouveau-mot-de-passe] échec', error.message);
+      setErreurs((precedentes) => ({
+        ...precedentes,
+        formulaire: error.message,
+      }));
+      return;
+    }
     setTermine(true);
   }
 
@@ -45,6 +73,16 @@ export default function FormulaireNouveauMotDePasse() {
   return (
     <section className="formulaire carte-auth" aria-labelledby="titre-nouveau">
       <h2 id="titre-nouveau">Choisissez un nouveau mot de passe</h2>
+
+      {erreurLien && (
+        <p className="erreur" role="alert">
+          {erreurLien}{' '}
+          <Link href="/mot-de-passe-oublie">Demander un nouvel email</Link>
+        </p>
+      )}
+      {erreurs.formulaire && (
+        <p className="erreur" role="alert">{erreurs.formulaire}</p>
+      )}
 
       <form onSubmit={soumettre} noValidate>
         <div className="grille-champs">

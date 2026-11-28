@@ -13,8 +13,14 @@ export async function GET(request) {
     const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
 
     if (!error) {
-      const suite = type === 'recovery' ? '/nouveau-mot-de-passe' : '/suivi';
-      return NextResponse.redirect(`${origin}${suite}`);
+      // `next` vient de la template d’email Supabase. On n’accepte qu’un chemin
+      // local pour éviter une redirection vers un autre site.
+      const next = searchParams.get('next') ?? '';
+      const cheminLocal = next.startsWith('/') && !next.startsWith('//') ? next : '';
+      const suite = type === 'recovery'
+        ? cheminLocal || '/nouveau-mot-de-passe'
+        : '/suivi';
+      return NextResponse.redirect(new URL(suite, origin));
     }
   }
 
